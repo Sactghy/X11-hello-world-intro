@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
     XSetWindowAttributes swa;
     swa.event_mask = KeyPressMask|ButtonPressMask|ButtonReleaseMask|ButtonMotionMask;
     if ( d )
-    { Window w = XCreateWindow(d, XDefaultRootWindow(d), 0, 0, 1018, 740, 0, 			CopyFromParent, CopyFromParent, CopyFromParent, 0b00100000000000, &swa);
+    { Window w = XCreateWindow(d, XDefaultRootWindow(d), 0, 0, 1018, 740, 0, CopyFromParent, CopyFromParent, CopyFromParent, 0b00100000000000, &swa);
     XStoreName(d, w, "Hello world\0");
     GC gc = XDefaultGC(d, 0);
     XMapWindow(d, w); XFlush (d);
