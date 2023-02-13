@@ -46,7 +46,6 @@ sk1:  if ( ( b % 2 != 0 ) ) k2 = -1; else k2 = 1;
      } if ( cr ) xc++; else yc--; }
 }
 
-
 void centerc( char *dt, unsigned char dens )
 {	dens+=13;
     unsigned char tr;
@@ -316,13 +315,14 @@ o3:	; char *dtM = malloc( sizeof (char[1020*740*4]));
 
     if ((e1.type==KeyPress)&&(e1.xkey.keycode==65)) {e1.type=0; XNextEvent(d, &e1); e1.type=0; }
 
-    if (!done&&(e1.type==KeyPress)&&(e1.xkey.keycode==52)) {e1.type=0; crcmode=!crcmode;}
+    if (!done&&(e1.type==KeyPress)&&(e1.xkey.keycode==52)) {e1.type=0; crcmode=!crcmode; } }
 
-nt_: ;
-           } while ((e1.type!=KeyPress)&&((e1.xkey.keycode>255)||(e1.xkey.keycode==65)||(e1.xkey.keycode==52)));
+    while ((e1.type!=KeyPress)&&((e1.xkey.keycode>255)||(e1.xkey.keycode==65)||(e1.xkey.keycode==52)));
+
     printf( "Key code: %i\n", e1.xkey.keycode);
+
     free(d2); free(dtX); free(dtM);
     free(ox); free(oy); free(ob);
-    }
-XCloseDisplay(d);
+
+    } XCloseDisplay(d);
 }
