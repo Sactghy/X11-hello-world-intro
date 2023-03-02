@@ -7,6 +7,15 @@
 
 const int dts = 4122+6, x_c = 1020, y_c = 740, lnn = 390, lnm = 660, lncol = 0, lncoV = 0, lncoB = 0;
 
+struct Randm{ int res, result; };
+
+char rand0( struct Randm* a )
+{
+    a->res = rand();
+    a->result = (unsigned char)(a->res);
+    return a->result;
+}
+
 void circle(char *dt, double rad, int x, int y, unsigned char dens, unsigned char mask)
 {	unsigned char tr, bp,gp,rp;
     double xc = 0.0, xs, yc = 1.0, rc = rad*rad;
@@ -111,26 +120,18 @@ sk_:	if ((c->slx!=0)&&(c->c2_grow%18==0)) c->slx -=3;
 nx_:	if (c->c2_grow<144) c->c2_grow++;
 }
 
-struct Randm{ unsigned char res, result; };
 
-char rand0( struct Randm* a )
-{	a->res = rand();
-    a->result = (unsigned char)(a->res);
-    return a->result; 	 }
 
 int main(int argc, char *argv[])
 {
     srand(423); rand();
-    time_t now;
-    struct tm beg = *localtime(&now);
-    double seconds;
 
     Display *d = XOpenDisplay(0);
 
     XSetWindowAttributes swa;
     swa.event_mask = KeyPressMask|ButtonPressMask|ButtonReleaseMask|ButtonMotionMask;
     if ( d )
-    { Window w = XCreateWindow(d, XDefaultRootWindow(d), 0, 0, 1018, 740, 0, CopyFromParent, CopyFromParent, CopyFromParent, 0b00100000000000, &swa);
+    { Window w = XCreateWindow(d, XDefaultRootWindow(d), 0, 0, 1018, 740, 0, 			CopyFromParent, CopyFromParent, CopyFromParent, 0b00100000000000, &swa);
     XStoreName(d, w, "Hello world\0");
     GC gc = XDefaultGC(d, 0);
     XMapWindow(d, w); XFlush (d);
@@ -206,7 +207,13 @@ o3:	; char *dtM = malloc( sizeof (char[1020*740*4]));
     unsigned int* oy = malloc ( sizeof(unsigned int[dts]) );
     int* ob = malloc( sizeof(int[dts]));
 
-    do { for (int i=0; i<1020*740*4; i += 4 )
+    double cc1 = 10.0 * clock() / CLOCKS_PER_SEC, cc2 = cc1 + 1.1;
+
+    do { double ccc = cc2 - cc1; if ( ccc > 0.096 ) {
+
+     cc1 = 10.0 * clock() / CLOCKS_PER_SEC;
+
+     for (int i=0; i<1020*740*4; i += 4 )
      { if (!crcmode) rnd = rand0(&vRandom); else rnd=123; rnd &= sh;
          if ( st2chk ) {dt[i] = 128+rnd; dt[i+1] = 128+rnd; dt[i+2] = 128+rnd;
                  d2[i] = 128+rnd; goto ex2;}
@@ -313,11 +320,11 @@ o3:	; char *dtM = malloc( sizeof (char[1020*740*4]));
 
     XCheckWindowEvent(d,w,KeyPressMask,&e1);
 
-    if ((e1.type==KeyPress)&&(e1.xkey.keycode==65)) {e1.type=0; XNextEvent(d, &e1); e1.type=0; }
+    if ( e1.type == KeyPress && e1.xkey.keycode == 65 ) { e1.type=0; XNextEvent(d, &e1); e1.type=0; }
 
-    if (!done&&(e1.type==KeyPress)&&(e1.xkey.keycode==52)) {e1.type=0; crcmode=!crcmode; } }
+    if ( !done && e1.type == KeyPress && e1.xkey.keycode == 52 ) { e1.type=0; crcmode=!crcmode; } }
 
-    while ((e1.type!=KeyPress)&&((e1.xkey.keycode>255)||(e1.xkey.keycode==65)||(e1.xkey.keycode==52)));
+     else cc2 = 10.0 * clock() / CLOCKS_PER_SEC; } while ( e1.type != KeyRelease && e1.xkey.keycode != 9 );
 
     printf( "Key code: %i\n", e1.xkey.keycode);
 
